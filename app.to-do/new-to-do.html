@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Add new To Do</title>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html,
+            body,
+            .form {
+                height: 100%;
+            }
+
+            .form {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form .textarea {
+                flex-grow: 1;
+            }
+
+            .form .textarea textarea {
+                width: 100%;
+                height: 100%;
+                resize: none;
+            }
+        </style>
+    </head>
+    <body>
+        <form class="form">
+            <label for="newToDo">Enter new ToDo</label>
+            <div class="textarea">
+                <textarea id="newToDo" placeholder="Enter something ..." autofocus></textarea>
+            </div>
+            <button id="submit" type="submit">Add</button>
+        </form>
+
+        <script>
+            const electron = require('electron');
+            const { ipcRenderer } = electron;
+
+            document.querySelector('.form').addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                let newToDo = document.querySelector('#newToDo').value;
+
+                ipcRenderer.send('todo:add', newToDo);
+            });
+        </script>
+    </body>
+</html>

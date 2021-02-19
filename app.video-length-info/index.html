@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Video Length Info</title>
+    </head>
+    <body>
+        <h1>Video Length Info</h1>
+        <br />
+
+        <form id="formSelectVideo">
+            <div>
+                <label for="selectVideo">Select a video file: </label>
+                <input type="file" id="selectVideo" accept="video/*" />
+            </div>
+        </form>
+        <br />
+
+        <div>
+            <button type="button" id="getVideoLengthInfo">Get video length</button>
+
+            <span id="videoLengthInfo"></span>
+        </div>
+
+        <script>
+            const electron = require('electron');
+            const { ipcRenderer } = electron;
+
+            document.getElementById('formSelectVideo').addEventListener('submit', (event) => {
+                event.preventDefault();
+            });
+
+            document.getElementById('getVideoLengthInfo').addEventListener('click', () => {
+                const files = document.getElementById('selectVideo').files;
+                if (files.length <= 0) {
+                    alert('Please select a video file!');
+                } else {
+                    const file = files[0];
+
+                    ipcRenderer.send('video:submit', file.path);
+                }
+            });
+
+            ipcRenderer.on('video:duration', (event, duration) => {
+                let time = {
+                    duration: parseFloat(duration),
+                };
+                time.hh = Math.floor(time.duration / 3600);
+                time.mm = Math.floor((duration - time.hh * 3600) / 60);
+                time.ss = Math.floor(duration - time.hh * 3600 - time.mm * 60);
+                time.ms = Math.floor((time.duration - parseInt(time.duration)) * 1000);
+
+                document.getElementById(
+                    'videoLengthInfo'
+                ).innerHTML = `Video length is: ${time.hh}h ${time.mm}m ${time.ss}s ${time.ms}ms (${time.duration}s)`;
+            });
+        </script>
+    </body>
+</html>

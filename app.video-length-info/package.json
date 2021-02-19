@@ -1,0 +1,15 @@
+{
+  "name": "app.video-length-info",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "electron ."
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "electron": "^11.2.3",
+    "fluent-ffmpeg": "^2.1.2"
+  }
+}

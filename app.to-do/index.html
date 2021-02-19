@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>To Do App</title>
+    </head>
+    <body>
+        <h1>ToDo Apps</h1>
+
+        <ul id="toDoList"></ul>
+
+        <script>
+            const electron = require('electron');
+            const { ipcRenderer } = electron;
+            const toDoList = document.querySelector('#toDoList');
+
+            ipcRenderer.on('todo:add', (event, newToDo) => {
+                toDoList.innerHTML += `<li>${newToDo}</li>`;
+            });
+
+            ipcRenderer.on('todo:clear', (event) => {
+                toDoList.innerHTML = '';
+            });
+        </script>
+    </body>
+</html>
